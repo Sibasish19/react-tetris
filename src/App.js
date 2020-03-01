@@ -11,7 +11,12 @@ import { usePlayer } from './hooks/usePlayer';
 import { useStage } from './hooks/useStage';
 import { useGameStatus } from './hooks/useGameStatus';
 
-import { createStage, detectCollision } from './helpers';
+import {
+	createStage,
+	detectCollision,
+	changeDropTimeWithLevel,
+	LEVEL_CHANGE_AT
+} from './helpers';
 
 import Button from './components/Button';
 import Stage from './components/Stage';
@@ -41,7 +46,7 @@ const App = () => {
 
 	const startGame = () => {
 		setStage(createStage());
-		setDropTime(500);
+		setDropTime(changeDropTimeWithLevel(0));
 		resetPlayer();
 		setGameOver(false);
 		setScore(0);
@@ -50,9 +55,9 @@ const App = () => {
 	};
 
 	const drop = () => {
-		if (rows > (level + 1) * 10) {
+		if (rows > (level + 1) * LEVEL_CHANGE_AT) {
 			setLevel(prev => prev + 1);
-			setDropTime(500 / (level + 1));
+			setDropTime(changeDropTimeWithLevel(level));
 		}
 		if (!detectCollision(player, stage, { x: 0, y: 1 })) {
 			updatePlayerPosition({ x: 0, y: 1, collided: false });
@@ -69,7 +74,7 @@ const App = () => {
 	const onKeyDownRelease = ({ keyCode }) => {
 		if (!gameOver) {
 			if (keyCode === 40) {
-				setDropTime(500);
+				setDropTime(changeDropTimeWithLevel(level));
 			}
 		}
 	};
@@ -116,14 +121,11 @@ const App = () => {
 			<StyledTetris>
 				<Stage stage={stage} />
 				<aside>
-					{gameOver ? (
+					<Card text={`Score: ${score}`} />
+					<Card text={`Rows: ${rows}`} />
+					<Card text={`Level: ${level}`} />
+					{gameOver && (
 						<Card gameOver={gameOver} text='Game Over...' />
-					) : (
-						<div>
-							<Card text={`Score: ${score}`} />
-							<Card text={`Rows: ${rows}`} />
-							<Card text={`Level: ${level}`} />
-						</div>
 					)}
 					<Button startGame={startGame} />
 				</aside>
