@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.css"],"names":[],"mappings":"AAAA,KACC,QAAS,CACT,qBAAsB,CACtB,gBACD,CAEA,WACC,mBAAoB,CACpB,4EACD","file":"main.ff8eb191.chunk.css","sourcesContent":["body {\r\n\tmargin: 0;\r\n\tbox-sizing: border-box;\r\n\tfont-size: 0.75rem;\r\n}\r\n\r\n@font-face {\r\n\tfont-family: 'Pixel';\r\n\tsrc: url('../fonts/Pixel-LCD-7.woff') format('woff');\r\n}\r\n"]}
