@@ -2,6 +2,9 @@ import TETROMINOS from './tetrominos';
 
 export const STAGE_WIDTH = 12;
 export const STAGE_HEIGHT = 15;
+export const LEVEL_CHANGE_AT = 5;
+const DROP_TIME = 1000;
+const linePoints = [40, 100, 300, 1200];
 
 export const createStage = () =>
 	Array.from(Array(STAGE_HEIGHT), () =>
@@ -49,7 +52,8 @@ export const rotate = (matrix, direction) => {
 	return rotatedMatrix.reverse();
 };
 
-const linePoints = [40, 100, 300, 1200];
-
 export const calculateScore = (level, rows) =>
 	linePoints[rows - 1] * (level + 1);
+
+export const changeDropTimeWithLevel = level =>
+	DROP_TIME / Math.pow(level + 1, 0.5);
