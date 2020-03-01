@@ -7,7 +7,7 @@ export const StyledCard = styled.div`
 	padding: 0.5rem;
 	border: 0.1rem solid #333;
 	min-height: 1rem;
-	width: 90%;
+	width: 100%;
 	border-radius: 0.15rem;
 	color: ${props => (props.gameOver ? 'red' : '#aaa')};
 	background: #111;

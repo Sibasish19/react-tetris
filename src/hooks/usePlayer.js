@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-import { generateTetrominos } from '../helpers';
+import { generateTetrominos, rotate, detectCollision } from '../helpers';
 
 export const usePlayer = () => {
 	// Initialize with a blank stage
@@ -18,6 +18,26 @@ export const usePlayer = () => {
 		}));
 	};
 
+	const rotatePlayer = (stage, direction) => {
+		const clonedPlayer = JSON.parse(JSON.stringify(player));
+		clonedPlayer.tetromino = rotate(clonedPlayer.tetromino, direction);
+
+		const xPosition = clonedPlayer.position.x;
+		let offset = 1;
+
+		// Move a tetromino back and forth in the same row
+		while (detectCollision(clonedPlayer, stage, { x: 0, y: 0 })) {
+			clonedPlayer.position.x += offset;
+			offset = -(offset + offset > 0 ? 1 : -1);
+			if (offset > clonedPlayer.tetromino[0].length) {
+				rotate(clonedPlayer.tetromino, -direction);
+				clonedPlayer.position.x = xPosition;
+				return;
+			}
+		}
+		setPlayer(clonedPlayer);
+	};
+
 	const resetPlayer = useCallback(() => {
 		setPlayer({
 			position: { x: 0, y: 0 },
@@ -26,5 +46,5 @@ export const usePlayer = () => {
 		});
 	}, []);
 
-	return [player, updatePlayerPosition, resetPlayer];
+	return [player, updatePlayerPosition, rotatePlayer, resetPlayer];
 };
